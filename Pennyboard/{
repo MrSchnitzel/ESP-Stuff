@@ -1,0 +1,54 @@
+{
+	person:
+	Omas opa
+	name: Michael Neff
+	geboren: ~1890
+	Wohnort: Neppen // teil von oesterreich ungran
+	Beruf: Maurer,
+	Hat Opas haus gebaut.
+
+	teil der oesterreichisch Ungarischen Truppe.
+	grenze ca 15km von hermannstad.
+
+	Staedte wurden in Nachbarschften organisiert. Nachbarschaften beinhalteten immer einen Teil einer Straße.
+	Oberstes Amt: Altnachbar, danach Jungnachbar.
+
+	
+	Evanglische Kirche. Pfarrer wurde von der Gemeinde gewählt und finanziert (pfarrhaus, holz fuer den Winter); war angestellter der Gemeinde.
+	Diese haben sich bei der Gemeinde beworben und kamen von aussen.
+
+
+}
+{
+	person:
+	Opas Vater
+	name: Karl-Alfred Csallner
+	Geboren: Bistritz ~1870-1880
+
+}
+{
+	person:
+	opas Mutter
+	name: Simonis
+	Wohnort
+}
+{
+	person:
+	opas Mutters Vater
+	Wohnort: Reps
+	Beruf: Finzanzbeamter Schäßburg (https://en.wikipedia.org/wiki/Sighi%C8%99oara)
+}
+
+{
+	person:
+	opas groß Mutter
+	name: Friedriger
+}
+
+{
+	person:
+	opas ur-Opa
+	name: Friedriger
+	beruf: gerber
+
+}

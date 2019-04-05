@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;compassTest/libraries/Mecha_QMC5883L-master&apos; to &apos;QMC5883L&apos;" description="Rename resource &apos;Mecha_QMC5883L-master&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="libraries/Mecha_QMC5883L-master" name="QMC5883L" stamp="1546265292298" updateReferences="true"/>
+</session>

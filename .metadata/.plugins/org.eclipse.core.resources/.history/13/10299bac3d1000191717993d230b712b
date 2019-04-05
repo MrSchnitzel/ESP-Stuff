@@ -1,0 +1,357 @@
+#include "Arduino.h"
+#include <RGB.h>
+#include <Adafruit_NeoPixel.h>
+#include <EEPROM.h>
+#include <LED.h>
+#include <algorithm>
+#include <QMC5883L.h>
+#include <Wire.h>
+#include <Preferences.h>
+
+
+#define LEDPIN 23
+#define LED_COUNT 33 //145 // Number of LEDs to drive (default: 9)
+#define MAXACTIVE 33
+#define POTPIN A6
+#define I2CD 19
+#define I2CC 22
+
+/* eprom save locations */
+enum eprom {
+	MODE = "MODE", SPEED = "SPEED", R = "R", G = "G", B = "B"
+};
+
+/* Available patterns */
+enum modes {
+	MODE_OFF = 0, MODE_COMPASS = 1, MODE_RAINBOW = 2,
+//	MODE_BLINK_RGB = 2,
+	MODE_MOVE_AROUND = 3,
+	MODE_BOUNCE = 4,
+	MODE_BACKRAINBOW = 5,
+//	MODE_COLOR = 2,
+	MODE_FADE_COLOR = 6
+//	MODE_RUNNING_COLOR = 4,
+//	MODE_RUNNING_PARALLEL = 5,
+//	MODE_LEFT_RIGHT_TEST = 6,
+};
+
+/* The three main commands for adjusting the mode, speed or color */
+enum commands {
+	COMMAND_MODE = 0, COMMAND_SPEED = 1, COMMAND_COLOR = 2
+};
+
+u_int current_mode;
+u_int current_speed;
+RGB current_color;
+RGB array1[LED_COUNT];
+LED band1(array1, (uint8_t) LEDPIN, (uint16_t) LED_COUNT, (uint16_t) MAXACTIVE); //Adafruit_NeoPixel(LED_COUNT, LEDPIN, NEO_GRB + NEO_KHZ800);
+int sensorValue = 0;
+RGB leds[LED_COUNT];
+QMC5883L compass;
+int16_t compassValuePrev;
+Preferences preferences;
+
+void setup() {
+	preferences.begin("pennyBoard", false);
+	Serial.begin(9600);
+	compass.init();
+	Wire.begin(I2CD, I2CC);
+	compass.reset();
+//	randomSeed(analogRead(0)); //edit to sensor
+	current_mode = preferences.getUInt((char *)MODE, 0);
+	current_speed = preferences.getUInt((char *)SPEED, 100);// EEPROM.read(EPROM_SPEED);
+	current_color.r = preferences.getUInt((char *)R, 0);
+	current_color.g = preferences.getUInt((char *)G, 0);//EEPROM.read(EPROM_G);
+	current_color.b = preferences.getUInt((char *)B, 0);//EEPROM.read(EPROM_B);
+	printMode();
+	current_speed = 100;
+}
+
+// The loop function is called in an endless loop
+void loop() {
+	if (Serial.available() > 0) {
+		readCommand();
+//		printMode();
+	}
+	switch (current_mode) {
+
+	case MODE_OFF:
+//		showCompass();
+		moveColorArray();
+//		band1.powerDown(250);
+		break;
+	case MODE_COMPASS:
+		showCompass();
+		break;
+	case MODE_RAINBOW:
+		allRainbow();
+		break;
+//	case MODE_BLINK_RGB:
+//		blinkRGB(current_speed);
+//		break;
+	case MODE_MOVE_AROUND:
+		moveColorArray();
+//		moveAround(max(current_speed,1));
+		break;
+//	case MODE_COLOR:
+//	setAllLED(current_color);
+//	break;
+//	case MODE_FADE_COLOR:
+//	fadeColor(current_color, current_speed);
+//	break;
+//	case MODE_RUNNING_COLOR:
+//	running_color();
+//	break;
+//	case MODE_RUNNING_PARALLEL:
+//	running_parallel();
+//	break;
+//	case MODE_LEFT_RIGHT_TEST:
+//	left_right_test();
+//     break;
+	default:
+		band1.powerDown(250);
+		break;
+	}
+
+}
+
+void printMode() {
+	Serial.print("Mode: ");
+	switch (current_mode) {
+	case MODE_OFF:
+		Serial.print("OFF");
+		break;
+//	case MODE_BLINK_RGB:
+//		Serial.print("BLINK_RGB");
+//		break;
+//	case MODE_COLOR:
+//		Serial.print("COLOR");
+//		break;
+//	case MODE_RUNNING_COLOR:
+//		Serial.print("RUNNING_COLOR");
+//		break;
+//	case MODE_LEFT_RIGHT_TEST:
+//		Serial.print("LEFT_RIGHT_TST");
+//		break;
+	default:
+		Serial.print("UNKNOWN MODE: ");
+		Serial.print(current_mode);
+		break;
+	}
+	Serial.print(", SPEED: ");
+	Serial.print(current_speed);
+	Serial.print(", COLOR: R:");
+	Serial.print(current_color.r);
+	Serial.print(" G:");
+	Serial.print(current_color.g);
+	Serial.print(" B:");
+	Serial.println(current_color.b);
+}
+
+int read_serial() {
+	while (!Serial.available())
+		;
+	int tmp = Serial.parseInt();
+	Serial.print(tmp);
+	return tmp;
+}
+
+void readCommand() {
+	Serial.print("Change Mode(0), Speed(1) or Color(2)? ");
+	int command = read_serial();
+	Serial.println();
+
+	switch (command) {
+	case COMMAND_MODE:
+		Serial.print("Mode? ");
+		current_mode = read_serial();
+//		EEPROM.write(EPROM_MODE, current_mode);
+		preferences.putUInt((char *)MODE, current_mode);
+		Serial.println();
+		break;
+	case COMMAND_SPEED:
+		Serial.print("Speed? ");
+		current_speed = read_serial();
+//		EEPROM.write(EPROM_SPEED, current_speed);
+		preferences.putUInt((char *)SPEED, current_mode);
+		break;
+		Serial.println();
+	case COMMAND_COLOR:
+		Serial.print("Color? ");
+
+		Serial.print("r: ");
+		current_color.r = read_serial();
+//		EEPROM.write(EPROM_R, current_color.rn());
+		preferences.putUInt((char *)current_color.rn(), current_mode);
+
+		Serial.print(" g: ");
+		current_color.g = read_serial();
+//		EEPROM.write(EPROM_G, current_color.gn());
+		preferences.putUInt((char *)current_color.gn(), current_mode);
+
+		Serial.print(" b: ");
+		current_color.b = read_serial();
+//		EEPROM.write(EPROM_B, current_color.bn());
+		preferences.putUInt((char *)current_color.bn(), current_mode);
+		Serial.println();
+		break;
+	default:
+		Serial.println("Unknown Command");
+		break;
+	}
+}
+
+void blinkRGB(int speed) {
+	RGB value;
+
+	speed = max(1, speed);
+	value.r = 255;
+	value.g = 0;
+	value.b = 0;
+	band1.setAllLed(value);
+	band1.saveSet();
+
+	delay(speed);
+
+	value.r = 0;
+	value.g = 255;
+	value.b = 0;
+	band1.setAllLed(value);
+	band1.saveSet();
+
+	delay(speed);
+
+	value.r = 0;
+	value.g = 0;
+	value.b = 255;
+
+	band1.setAllLed(value);
+	band1.saveSet();
+
+	delay(speed);
+}
+
+void moveAround(int speed) {
+	for (int i = 0; i < LED_COUNT; i++) {
+		band1.setAllLed(RGB(0, 0, 0));
+		array1[i] = current_color;
+		band1.saveSet();
+		delay(speed);
+	}
+	for (int i = 1; i < LED_COUNT - 1; i++) {
+		band1.setAllLed(RGB(0, 0, 0));
+		array1[LED_COUNT - i - 1] = current_color;
+		band1.saveSet();
+		delay(speed);
+	}
+}
+
+void moveColorArray() {
+	uint16_t transitionSize = ceil((float)(LED_COUNT + 1)/6);
+	Serial.println(transitionSize);
+	RGB rainbow[LED_COUNT];//(6 * transitionSize )- 1];
+	//	transitionSize -= 1;
+	getColorArray(RGB(255, 0, 0), RGB(255, 255, 0), transitionSize, rainbow);
+	getColorArray(RGB(255, 255, 0), RGB(0, 255, 0), transitionSize, &rainbow[transitionSize - 1]);
+	getColorArray(RGB(0, 255, 0), RGB(0, 255, 255), transitionSize, &rainbow[(transitionSize * 2) - 1]);
+	getColorArray(RGB(0, 255, 255), RGB(0, 0, 255), transitionSize,
+			&rainbow[(transitionSize * 3) - 1]);
+	getColorArray(RGB(0, 0, 255), RGB(255, 0, 255), transitionSize,
+			&rainbow[(transitionSize * 4 )- 1]);
+	getColorArray(RGB(255, 0, 255), RGB(255, 0, 0), transitionSize,
+			&rainbow[(transitionSize * 5) - 1]);
+
+	for (int i = 0; i < LED_COUNT; ++i) {
+		rainbow[i].printString();
+	}
+//	int anzahl = 4;
+//	RGB farben1[anzahl];
+//	RGB farben2[anzahl];
+//	RGB farben3[anzahl];
+//	RGB farben4[anzahl];
+//	RGB farben5[anzahl];
+//	RGB farben6[anzahl];
+//
+//	getColorArray(RGB(255, 0, 0), RGB(255, 255, 0), anzahl, farben1);
+//	getColorArray(RGB(255, 255, 0), RGB(0, 255, 0), anzahl, farben2);
+//	getColorArray(RGB(0, 255, 0), RGB(0, 255, 255), anzahl, farben3);
+//	getColorArray(RGB(0, 255, 255), RGB(0, 0, 255), anzahl, farben4);
+//	getColorArray(RGB(0, 0, 255), RGB(255, 0, 255), anzahl, farben5);
+//	getColorArray(RGB(255, 0, 255), RGB(255, 0, 0), anzahl, farben6);
+
+//	Serial.println();
+//	delay(10);
+	//todo remove
+//	for (int j = 0; j < anzahl; ++j) {
+//		farben[j].printString();
+//	}
+	delay(7000);
+	for (int i = 0; i < 101; ++i) {
+//		for (int i = 0; i < LED_COUNT; ++i) {
+		band1.setAllLed(RGB(0, 0, 0));
+		band1.setLEDArray(band1.getPositionFromPercent(i), (6*transitionSize) -1, rainbow, 50, true);
+//		band1.setLEDArray(band1.getPositionFromPercent(i), anzahl, rainbow, 50, true);
+//		band1.setLEDArray(band1.getPositionFromPercent(i) + anzahl - 1, anzahl, farben2, 50, true);
+//		band1.setLEDArray(band1.getPositionFromPercent(i) + 2 * anzahl - 2, anzahl, farben3, 50, true);
+//		band1.setLEDArray(band1.getPositionFromPercent(i) + 3 * anzahl - 3, anzahl, farben4, 50, true);
+//		band1.setLEDArray(band1.getPositionFromPercent(i) + 4 * anzahl - 4, anzahl, farben5, 50, true);
+//		band1.setLEDArray(band1.getPositionFromPercent(i) + 5 * anzahl - 5, anzahl, farben6, 50, true);
+		band1.saveSet();
+//		delay(100);
+		delay(current_speed);
+	}
+}
+
+void showCompass() {
+	RGB mainCol = RGB(130, 10, 60);
+	uint8_t anzahl = 8;
+	uint8_t threshold = 2;
+	float heading = compass.readHeading(true);
+//	Serial.print("Heading ");
+//	Serial.println(heading);
+	float percent = 100 * heading / 360;
+	if ((compassValuePrev - threshold) < percent
+			&& percent < (compassValuePrev + threshold)) {
+		return;
+	}
+	compassValuePrev = percent;
+
+	RGB farben1[anzahl];
+	RGB farben2[anzahl];
+
+	getColorArray(RGB(0, 0, 255), RGB(255, 255, 255), anzahl, farben1);
+	getColorArray(RGB(255, 255, 255), RGB(0, 0, 255), anzahl, farben2);
+
+	int pos = band1.getPositionFromPercent(percent);
+
+	band1.setAllLed(mainCol);
+//	Serial.println(pos);
+	band1.setLEDArray(pos - anzahl, anzahl, farben1, 70, true);
+	band1.setLED(pos, RGB(255, 0, 0), 0, true);
+	band1.setLEDArray(pos + 1, anzahl, farben2, 70, true);
+	band1.saveSet();
+	delay(50);
+}
+
+void allRainbow() {
+	uint16_t transitionSize = 100;
+	RGB rainbow[6 * transitionSize - 1];
+//	transitionSize -= 1;
+	getColorArray(RGB(255, 0, 0), RGB(255, 255, 0), transitionSize, rainbow);
+	getColorArray(RGB(255, 255, 0), RGB(0, 255, 0), transitionSize,
+			&rainbow[transitionSize - 1]);
+	getColorArray(RGB(0, 255, 0), RGB(0, 255, 255), transitionSize,
+			&rainbow[transitionSize * 2 - 1]);
+	getColorArray(RGB(0, 255, 255), RGB(0, 0, 255), transitionSize,
+			&rainbow[transitionSize * 3 - 1]);
+	getColorArray(RGB(0, 0, 255), RGB(255, 0, 255), transitionSize,
+			&rainbow[transitionSize * 4 - 1]);
+	getColorArray(RGB(255, 0, 255), RGB(255, 0, 0), transitionSize,
+			&rainbow[transitionSize * 5 - 1]);
+
+	for (uint32_t i = 0; i < 6 * transitionSize; ++i) {
+		band1.setAllLed(rainbow[i]);
+		band1.saveSet();
+		delay(current_speed);
+	}
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Pennyboard/helpers/RGB&apos; to &apos;RGB.h&apos;" description="Rename resource &apos;RGB&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="helpers/RGB" name="RGB.h" stamp="1546440189974" updateReferences="true"/>
+</session>

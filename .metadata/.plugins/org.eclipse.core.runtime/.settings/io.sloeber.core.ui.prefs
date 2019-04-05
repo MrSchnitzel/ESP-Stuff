@@ -1,0 +1,13 @@
+Board\ plotter\ filter\ on\ off=false
+Build\ before\ upload\ option=TRUE
+Clean\ Serial\ Monitor\ after\ upload=true
+FmStatus=12
+Gui\ entry\ for\ private\ hardware\ paths=/Users/riggi/Arduino/hardware\:
+Gui\ entry\ for\ private\ library\ paths=/Users/riggi/Arduino/libraries\:
+Hide\ json\ files\ in\ preferences\ platform\ selection\ page=false
+Open\ serial\ connections\ with\ the\ monitor=true
+Serial\ Monitor\ Last\ Used\ Line\ Ending\ index=0
+Serial\ Monitor\ Last\ Used\ auto\ scroll\ setting=true
+Serial\ monitor\ last\ selected\ Port=/dev/cu.SLAB_USBtoUART
+Serial\ monitor\ last\ selected\ rate=9600
+eclipse.preferences.version=1

@@ -1,0 +1,82 @@
+15:58:34 **** Incremental Build of configuration Release for project WaterControl ****
+make all 
+Do all objcopy commands
+python "/Users/riggi/Arduino/hardware/espressif/esp32/tools/gen_esp32part.py" -q "/Users/riggi/Arduino/hardware/espressif/esp32/tools/partitions/default.csv" "/Users/riggi/sloeber-workspace/WaterControl/Release/WaterControl.partitions.bin"
+"/Users/riggi/Arduino/hardware/espressif/esp32/tools/esptool/esptool" --chip esp32 elf2image --flash_mode "dio" --flash_freq "80m" --flash_size "4MB" -o "/Users/riggi/sloeber-workspace/WaterControl/Release/WaterControl.bin" "/Users/riggi/sloeber-workspace/WaterControl/Release/WaterControl.elf"
+esptool.py v2.6-beta1
+Finished building: WaterControl.hex
+ 
+Building target: WaterControl
+Printing size:
+"/Applications/sloeber.app/Contents/Eclipse//arduinoPlugin/packages/esp32/tools/xtensa-esp32-elf-gcc/1.22.0-80-g6c4433a-5.2.0/bin/xtensa-esp32-elf-size" -A "/Users/riggi/sloeber-workspace/WaterControl/Release/WaterControl.elf"
+/Users/riggi/sloeber-workspace/WaterControl/Release/WaterControl.elf  :
+section                                                         size         addr
+.rtc.text                                                          0   1074528256
+.rtc.dummy                                                         0   1073217536
+.rtc.force_fast                                                    0   1073217536
+.rtc_noinit                                                        0   1342177792
+.rtc.force_slow                                                    0   1342177792
+.iram0.vectors                                                  1024   1074266112
+.iram0.text                                                    45604   1074267136
+.dram0.data                                                     8584   1073470304
+.noinit                                                            0   1073478888
+.dram0.bss                                                      4976   1073478888
+.flash.rodata                                                  43352   1061158944
+.flash.text                                                   109708   1074593816
+.debug_frame                                                   74824            0
+.debug_info                                                  1317692            0
+.debug_abbrev                                                 173043            0
+.debug_loc                                                    487814            0
+.debug_aranges                                                 29800            0
+.debug_ranges                                                  31672            0
+.debug_macro                                                  155032            0
+.debug_line                                                   634045            0
+.debug_str                                                    871627            0
+.comment                                                         360            0
+.xtensa.info                                                      56            0
+.xt.lit._ZN14HardwareSerialD5Ev                                    0            0
+.xt.prop._ZN14HardwareSerialD5Ev                                   0            0
+.xt.prop._ZN14HardwareSerialD2Ev                                  36            0
+.xt.prop._ZN14HardwareSerialD0Ev                                  36            0
+.xt.prop._ZTV14HardwareSerial                                     12            0
+.xt.lit._ZN9IPAddressD5Ev                                          0            0
+.xt.prop._ZN9IPAddressD5Ev                                         0            0
+.xt.prop._ZN9IPAddressD2Ev                                        36            0
+.xt.prop._ZN9IPAddressD0Ev                                        36            0
+.xt.prop._ZTV9IPAddress                                           12            0
+.xt.lit._ZN5Print5writeEPKc                                        8            0
+.xt.prop._ZN5Print5writeEPKc                                      60            0
+.xt.prop._ZTISt9exception                                         12            0
+.xt.prop._ZTISt9bad_alloc                                         12            0
+.xt.prop._ZTVN10__cxxabiv120__si_class_type_infoE                 12            0
+.xt.prop._ZTVSt9bad_alloc                                         12            0
+.xt.prop._ZTVN10__cxxabiv117__class_type_infoE                    12            0
+.xt.lit._ZNK9__gnu_cxx24__concurrence_lock_error4whatEv            8            0
+.xt.lit._ZNK9__gnu_cxx26__concurrence_unlock_error4whatEv          8            0
+.xt.lit._ZN9__gnu_cxx24__concurrence_lock_errorD5Ev                8            0
+.xt.lit._ZN9__gnu_cxx26__concurrence_unlock_errorD5Ev              8            0
+.xt.lit._ZN9__gnu_cxx7__mutex4lockEv                               8            0
+.xt.lit._ZN9__gnu_cxx13__scoped_lockD5Ev                           8            0
+.xt.prop._ZNK9__gnu_cxx24__concurrence_lock_error4whatEv          48            0
+.xt.prop._ZNK9__gnu_cxx26__concurrence_unlock_error4whatEv        48            0
+.xt.prop._ZN9__gnu_cxx24__concurrence_lock_errorD5Ev              12            0
+.xt.prop._ZN9__gnu_cxx26__concurrence_unlock_errorD5Ev            12            0
+.xt.prop._ZN9__gnu_cxx7__mutex4lockEv                             60            0
+.xt.prop._ZN9__gnu_cxx13__scoped_lockD5Ev                         12            0
+.xt.prop._ZN9__gnu_cxx24__concurrence_lock_errorD2Ev              36            0
+.xt.prop._ZN9__gnu_cxx26__concurrence_unlock_errorD2Ev            36            0
+.xt.prop._ZN9__gnu_cxx24__concurrence_lock_errorD0Ev              36            0
+.xt.prop._ZN9__gnu_cxx26__concurrence_unlock_errorD0Ev            36            0
+.xt.prop._ZN9__gnu_cxx13__scoped_lockD2Ev                         72            0
+.xt.prop._ZTIN9__gnu_cxx24__concurrence_lock_errorE               12            0
+.xt.prop._ZTIN9__gnu_cxx26__concurrence_unlock_errorE             12            0
+.xt.prop._ZTVN9__gnu_cxx24__concurrence_lock_errorE               12            0
+.xt.prop._ZTVN9__gnu_cxx26__concurrence_unlock_errorE             12            0
+Total                                                        3990013
+
+
+Finished building target: WaterControl
+ 
+
+15:58:34 Build Finished. 0 errors, 0 warnings. (took 563ms)
+
