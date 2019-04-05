@@ -267,7 +267,7 @@
                         					
                     </entry>
                     					
-                    <entry kind="includePath" name="/Users/riggi/Arduino/hardware/espressif/esp32/tools/sdk/include/soc">
+                    <entry kind="includePath" name="/Users/riggi/Arduino/hardware/espressif/esp32/tools/xtensa-esp32-elf/lib/gcc/xtensa-esp32-elf/5.2.0/include">
                         						
                         <flag value="BUILTIN|READONLY"/>
                         					
@@ -2173,6 +2173,12 @@
                         					
                     </entry>
                     					
+                    <entry kind="macro" name="CORE_DEBUG_LEVEL" value="1">
+                        						
+                        <flag value="BUILTIN|READONLY"/>
+                        					
+                    </entry>
+                    					
                     <entry kind="macro" name="CORE_DEBUG_LEVEL" value="4">
                         						
                         <flag value="BUILTIN|READONLY"/>
@@ -2227,6 +2233,12 @@
                         					
                     </entry>
                     					
+                    <entry kind="macro" name="__ATOMIC_RELAXED" value="0">
+                        						
+                        <flag value="BUILTIN|READONLY"/>
+                        					
+                    </entry>
+                    					
                     <entry kind="macro" name="__ATOMIC_RELEASE" value="3">
                         						
                         <flag value="BUILTIN|READONLY"/>
@@ -2240,12 +2252,6 @@
                     </entry>
                     					
                     <entry kind="macro" name="__BIGGEST_ALIGNMENT__" value="16">
-                        						
-                        <flag value="BUILTIN|READONLY"/>
-                        					
-                    </entry>
-                    					
-                    <entry kind="macro" name="__BYTE_ORDER__" value="__ORDER_LITTLE_ENDIAN__">
                         						
                         <flag value="BUILTIN|READONLY"/>
                         					
@@ -2497,12 +2503,6 @@
                         					
                     </entry>
                     					
-                    <entry kind="macro" name="__DEPRECATED" value="1">
-                        						
-                        <flag value="BUILTIN|READONLY"/>
-                        					
-                    </entry>
-                    					
                     <entry kind="macro" name="__ELF__" value="1">
                         						
                         <flag value="BUILTIN|READONLY"/>
@@ -2612,6 +2612,12 @@
                     </entry>
                     					
                     <entry kind="macro" name="__FLT_MIN__" value="1.1754943508222875e-38F">
+                        						
+                        <flag value="BUILTIN|READONLY"/>
+                        					
+                    </entry>
+                    					
+                    <entry kind="macro" name="__FLT_RADIX__" value="2">
                         						
                         <flag value="BUILTIN|READONLY"/>
                         					
@@ -2947,12 +2953,6 @@
                         					
                     </entry>
                     					
-                    <entry kind="macro" name="__INT_LEAST64_TYPE__" value="long long int">
-                        						
-                        <flag value="BUILTIN|READONLY"/>
-                        					
-                    </entry>
-                    					
                     <entry kind="macro" name="__INT_LEAST8_MAX__" value="0x7f">
                         						
                         <flag value="BUILTIN|READONLY"/>
@@ -3145,6 +3145,12 @@
                         					
                     </entry>
                     					
+                    <entry kind="macro" name="__SIG_ATOMIC_TYPE__" value="__ORDER_LITTLE_ENDIAN__">
+                        						
+                        <flag value="BUILTIN|READONLY"/>
+                        					
+                    </entry>
+                    					
                     <entry kind="macro" name="__SIG_ATOMIC_TYPE__" value="int">
                         						
                         <flag value="BUILTIN|READONLY"/>
@@ -3176,6 +3182,12 @@
                     </entry>
                     					
                     <entry kind="macro" name="__SIZEOF_LONG_LONG__" value="8">
+                        						
+                        <flag value="BUILTIN|READONLY"/>
+                        					
+                    </entry>
+                    					
+                    <entry kind="macro" name="__SIZEOF_LONG__" value="1">
                         						
                         <flag value="BUILTIN|READONLY"/>
                         					
@@ -3259,13 +3271,13 @@
                         					
                     </entry>
                     					
-                    <entry kind="macro" name="__STDC__" value="1">
+                    <entry kind="macro" name="__UINT16_C(c)" value="c">
                         						
                         <flag value="BUILTIN|READONLY"/>
                         					
                     </entry>
                     					
-                    <entry kind="macro" name="__UINT16_C(c)" value="c">
+                    <entry kind="macro" name="__UINT16_MAX__" value="200610">
                         						
                         <flag value="BUILTIN|READONLY"/>
                         					
@@ -3475,12 +3487,6 @@
                         					
                     </entry>
                     					
-                    <entry kind="macro" name="__VERSION__" value="0">
-                        						
-                        <flag value="BUILTIN|READONLY"/>
-                        					
-                    </entry>
-                    					
                     <entry kind="macro" name="__WCHAR_MAX__" value="0xffff">
                         						
                         <flag value="BUILTIN|READONLY"/>
@@ -3505,6 +3511,12 @@
                         					
                     </entry>
                     					
+                    <entry kind="macro" name="__WINT_MAX__" value="1">
+                        						
+                        <flag value="BUILTIN|READONLY"/>
+                        					
+                    </entry>
+                    					
                     <entry kind="macro" name="__WINT_MAX__" value="0xffffffffU">
                         						
                         <flag value="BUILTIN|READONLY"/>
@@ -3524,12 +3536,6 @@
                     </entry>
                     					
                     <entry kind="macro" name="__XTENSA_EL__" value="1">
-                        						
-                        <flag value="BUILTIN|READONLY"/>
-                        					
-                    </entry>
-                    					
-                    <entry kind="macro" name="__XTENSA_WINDOWED_ABI__" value="1">
                         						
                         <flag value="BUILTIN|READONLY"/>
                         					
@@ -3631,13 +3637,13 @@
                         					
                     </entry>
                     					
-                    <entry kind="macro" name="__cpp_runtime_arrays" value="198712">
+                    <entry kind="macro" name="__cpp_runtime_arrays" value="long long int">
                         						
                         <flag value="BUILTIN|READONLY"/>
                         					
                     </entry>
                     					
-                    <entry kind="macro" name="__cpp_rvalue_reference" value="200610">
+                    <entry kind="macro" name="__cpp_runtime_arrays" value="198712">
                         						
                         <flag value="BUILTIN|READONLY"/>
                         					
